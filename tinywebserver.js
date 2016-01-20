@@ -58,10 +58,10 @@ var MIME_TYPES = {
 };
 
 var options = {
-    host: 'localhost',
-    port: 8080,
+    host: process.env.IP,
+    port: process.env.PORT,
     index: 'index.html',
-    docroot: '.'
+    docroot: '/home/ubuntu/workspace/'
 };
 
 var get_mime = function(filename) {
@@ -156,7 +156,7 @@ var request_handler = function(request, response) {
                     }
                 });
             } else {
-                return respond(request, response, 404);
+                return serve_file(request, response, '404.html');
             }
         });
     }
