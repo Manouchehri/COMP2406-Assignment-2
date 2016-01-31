@@ -73,8 +73,8 @@ var options = function(optionsFilename) {
 };
 
 var default_options = {
-    host: process.env.IP,
-    port: process.env.PORT,
+    host: process.env.IP || '127.0.0.1',
+    port: process.env.PORT || 8080,
     index: 'index.html',
     docroot: '/home/ubuntu/workspace/'
 };
