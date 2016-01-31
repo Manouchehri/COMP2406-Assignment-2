@@ -141,14 +141,14 @@ var return_index = function(request, response, requestpath)  {
         } else {
             return respond(request, response, 404);
         }
-    }
+    };
     
     if (requestpath.substr(-1) !== '/') {
         requestpath += "/";
     }
     requestpath += options.index;
     return fs.exists(requestpath, exists_callback);
-}
+};
 
 var request_handler = function(request, response) {
     var requestpath;
