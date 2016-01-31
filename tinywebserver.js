@@ -76,7 +76,15 @@ var default_options = {
     host: process.env.IP || '127.0.0.1',
     port: process.env.PORT || 8080,
     index: 'index.html',
-    docroot: '/home/ubuntu/workspace/'
+    docroot: '.',
+    loggedheaders: ["user-agent", "referer"], /* @TODO: Figure out how to deal with the dash. */
+    logfile: "tinyweb.log",
+    errorpage: "error.html",
+    aliases: {
+        "/index.html": "/hello.html",
+        "/": "/hello.html",
+        "/really/cool.html": "/notcool.html"
+    }
 };
 
 var get_mime = function(filename) {
