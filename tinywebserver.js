@@ -57,22 +57,21 @@ var MIME_TYPES = {
     'txt': 'text/text'
 };
 
-var options = function(optionsFilename) {
-    
-        try {
-      options = JSON.parse(fs.readFileSync(optionsFilename, "utf-8"));
-    } 
-    catch (e) {
-      if (optionsFilename) {
-	console.error("Error reading/parsing options file " + optionsFilename +
-		    ", using defaults.");
-      } 
-      else {
-	    console.log("No options file specified, using defaults.");
-      }
-      options = default_options;
+var options = function (optionsFilename) {
+    try {
+        options = JSON.parse(fs.readFileSync(optionsFilename, "utf-8"));
     }
-    };
+    catch (e) {
+        if (optionsFilename) {
+            console.error("Error reading/parsing options file " + optionsFilename +
+                ", using defaults.");
+        }
+        else {
+            console.log("No options file specified, using defaults.");
+        }
+        options = default_options;
+    }
+};
 
 var default_options = {
     host: process.env.IP,
