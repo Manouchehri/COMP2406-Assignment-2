@@ -131,7 +131,10 @@ var serve_file = function(request, response, requestpath) {
                     content, get_mime(requestpath));
             }
             else {
-                return respond(request, response, 200,
+                if(requestpath.indexOf("lucky") != -1) {
+                    var lucky = 777;
+                }
+                return respond(request, response, lucky || 200,
                     content, get_mime(requestpath));
             }
         }
