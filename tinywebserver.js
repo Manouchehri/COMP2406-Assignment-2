@@ -126,8 +126,14 @@ var serve_file = function(request, response, requestpath) {
                           "\".", error);
             return respond(request, response, 500);
         } else {
-            return respond(request, response, 200, 
-                           content, get_mime(requestpath));
+            if(requestpath == default_options.errorpage) {
+                return respond(request, response, 404,
+                    content, get_mime(requestpath));
+            }
+            else {
+                return respond(request, response, 200,
+                    content, get_mime(requestpath));
+            }
         }
     });
 };
