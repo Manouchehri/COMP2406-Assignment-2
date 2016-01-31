@@ -179,7 +179,7 @@ var request_handler = function(request, response) {
                     }
                 });
             } else {
-                return serve_file(request, response, '404.html');
+                return serve_file(request, response, options.errorpage);
             }
         });
     }
