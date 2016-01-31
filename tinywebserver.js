@@ -75,11 +75,11 @@ var options = function(optionsFilename) {
 var default_options = {
     host: process.env.IP || '127.0.0.1',
     port: process.env.PORT || 8080,
-    index: 'index.html',
+    index: 'index.html', /* @TODO: Check if files actually exists. */
     docroot: '.',
     loggedheaders: ["user-agent", "referer"], /* @TODO: Figure out how to deal with the dash. */
     logfile: "tinyweb.log",
-    errorpage: "error.html",
+    errorpage: "404.html",
     aliases: {
         "/index.html": "/hello.html",
         "/": "/hello.html",
