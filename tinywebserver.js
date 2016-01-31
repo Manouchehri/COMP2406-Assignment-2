@@ -57,7 +57,24 @@ var MIME_TYPES = {
     'txt': 'text/text'
 };
 
-var options = {
+var options = function(optionsFilename) {
+    
+        try {
+      options = JSON.parse(fs.readFileSync(optionsFilename, "utf-8"));
+    } 
+    catch (e) {
+      if (optionsFilename) {
+	console.error("Error reading/parsing options file " + optionsFilename +
+		    ", using defaults.");
+      } 
+      else {
+	    console.log("No options file specified, using defaults.");
+      }
+      options = default_options;
+    }
+    };
+
+var default_options = {
     host: process.env.IP,
     port: process.env.PORT,
     index: 'index.html',
@@ -163,6 +180,8 @@ var request_handler = function(request, response) {
 };
 
 var server = http.createServer(request_handler);
+
+options(process.argv[3]);
 
 server.listen(options.port, options.host, function() {
     return console.log("Server listening at http://" +
