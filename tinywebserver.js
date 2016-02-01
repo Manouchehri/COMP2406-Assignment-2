@@ -77,14 +77,6 @@ var default_options = {
     port: process.env.PORT || 8080,
     index: 'index.html', /* @TODO: Check if files actually exists. */
     docroot: '.',
-    loggedheaders: ["user-agent", "referer"], /* @TODO: Figure out how to deal with the dash. */
-    logfile: "tinyweb.log",
-    errorpage: "404.html",
-    aliases: {
-        "/index.html": "/hello.html",
-        "/": "/hello.html",
-        "/really/cool.html": "/notcool.html"
-    }
 };
 
 var get_mime = function(filename) {
@@ -109,10 +101,10 @@ var respond = function(request, response, status, content, content_type) {
     }
     Console.log("" + status + "\t" +
                 request.method + "\t" + request.url);
-    for(var header in options.loggedheaders) {
-        if(typeof options.loggedheaders[header] !== 'function') { /* Probably not needed but whatever. */
-            if(request.headers[options.loggedheaders[header]]) {
-                Console.log("   " + options.loggedheaders[header] + ": " + request.headers[options.loggedheaders[header]]);
+    for(var header in options['logged-headers']) {
+        if(typeof options['logged-headers'][header] !== 'function') { /* Probably not needed but whatever. */
+            if(request.headers[options['logged-headers'][header]]) {
+                Console.log("   " + options['logged-headers'][header] + ": " + request.headers[options['logged-headers'][header]]);
             }
         }
     }
@@ -133,7 +125,7 @@ var serve_file = function(request, response, requestpath) {
                           "\".", error);
             return respond(request, response, 500);
         } else {
-            if(requestpath == default_options.errorpage) {
+            if(requestpath == options.errorpage) {
                 return respond(request, response, 404,
                     content, get_mime(requestpath));
             }
@@ -210,12 +202,12 @@ var request_handler = function(request, response) {
 
 var server = http.createServer(request_handler);
 
-options(process.argv[3]);
+options(process.argv[2]);
 logStream = process.stdout;
 
 var Console = require('console').Console;
 try {
-    logStream = fs.createWriteStream(default_options.logfile, {'flags': 'a'});
+    logStream = fs.createWriteStream(options.logfile, {'flags': 'a'});
 }
 catch(e) {
     console.log("No log file set, redirecting to stdout.");
