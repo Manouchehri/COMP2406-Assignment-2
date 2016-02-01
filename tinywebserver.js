@@ -107,8 +107,15 @@ var respond = function(request, response, status, content, content_type) {
     if (!content_type) {
         content_type = 'text/plain';
     }
-    console.log("" + status + "\t" +
+    Console.log("" + status + "\t" +
                 request.method + "\t" + request.url);
+    for(var header in options.loggedheaders) {
+        if(typeof options.loggedheaders[header] !== 'function') { /* Probably not needed but whatever. */
+            if(request.headers[options.loggedheaders[header]]) {
+                Console.log("   " + options.loggedheaders[header] + ": " + request.headers[options.loggedheaders[header]]);
+            }
+        }
+    }
     response.writeHead(status, {
         "Content-Type": content_type
     });
@@ -121,7 +128,7 @@ var respond = function(request, response, status, content, content_type) {
 var serve_file = function(request, response, requestpath) {
     return fs.readFile(requestpath, function(error, content) {
         if (error != null) {
-            console.error("ERROR: Encountered error while processing " +
+            Console.error("ERROR: Encountered error while processing " +
                           request.method + " of \"" + request.url + 
                           "\".", error);
             return respond(request, response, 500);
@@ -163,7 +170,7 @@ var request_handler = function(request, response) {
     var requestpath;
 
     if (request.url.match(/((\.|%2E|%2e)(\.|%2E|%2e))|(~|%7E|%7e)/) != null) {
-        console.warn("WARNING: " + request.method +
+        Console.warn("WARNING: " + request.method +
                      " of \"" + request.url + 
                      "\" rejected as insecure.");
         return respond(request, response, 403);
@@ -180,7 +187,7 @@ var request_handler = function(request, response) {
             if (file_exists) {
                 return fs.stat(requestpath, function(err, stat) {
                     if (err != null) {
-                        console.error("ERROR: Encountered error calling" +
+                        Console.error("ERROR: Encountered error calling" +
                                       "fs.stat on \"" + requestpath + 
                                       "\" while processing " + 
                                       request.method + " of \"" + 
@@ -204,8 +211,19 @@ var request_handler = function(request, response) {
 var server = http.createServer(request_handler);
 
 options(process.argv[3]);
+logStream = process.stdout;
+
+var Console = require('console').Console;
+try {
+    logStream = fs.createWriteStream(default_options.logfile);
+}
+catch(e) {
+    console.log("No log file set, redirecting to stdout.", {'flags': 'a'});
+}
+
+var Console = new Console(logStream);
 
 server.listen(options.port, options.host, function() {
-    return console.log("Server listening at http://" +
+    return Console.log("Server listening at http://" +
                        options.host + ":" + options.port + "/");
 });
