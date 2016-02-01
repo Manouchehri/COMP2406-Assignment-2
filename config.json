@@ -3,7 +3,7 @@
   "port": 8000,
   "index": "index.html",
   "docroot": ".",
-  "loggedheaders": ["user-agent", "referer"],
+  "logged-headers": ["user-agent", "referer"],
   "logfile": "tinyweb.log",
   "errorpage": "error.html",
   "aliases": {
