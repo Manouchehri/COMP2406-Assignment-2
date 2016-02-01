@@ -168,6 +168,13 @@ var request_handler = function(request, response) {
                      "\" rejected as insecure.");
         return respond(request, response, 403);
     } else {
+        for(var key in options.aliases) {
+            if(typeof options.aliases[key] !== 'function') { /* Probably not needed but whatever. */
+                if(request.url === key) {
+                    request.url = options.aliases[key];
+                }
+            }
+        }
         requestpath = path.normalize(path.join(options.docroot, request.url));
         return fs.exists(requestpath, function(file_exists) {
             if (file_exists) {
