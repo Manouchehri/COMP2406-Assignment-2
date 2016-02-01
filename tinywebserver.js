@@ -215,10 +215,10 @@ logStream = process.stdout;
 
 var Console = require('console').Console;
 try {
-    logStream = fs.createWriteStream(default_options.logfile);
+    logStream = fs.createWriteStream(default_options.logfile, {'flags': 'a'});
 }
 catch(e) {
-    console.log("No log file set, redirecting to stdout.", {'flags': 'a'});
+    console.log("No log file set, redirecting to stdout.");
 }
 
 var Console = new Console(logStream);
